@@ -2,7 +2,7 @@
 #  Title:  SearchTooliTotal.py
 #  Date:  6/14/2020
 #  Name:  Adam Gusst
-#  Version: 1.0
+#  Version: 2.0
 #################################################################
 
 # Libraries to import

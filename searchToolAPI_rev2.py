@@ -2,7 +2,7 @@
 #  Title:  SearchTool.py
 #  Date:  6/14/2020
 #  Name:  Adam Gusst
-#  Version: 1.0
+#  Version: 2.0
 #  This tool is used to make API calls out to VirusTotal for threat intel
 #########################################################################
 
