@@ -30,7 +30,7 @@ def filemove():
     
     try:
         for file_name in filelist:
-            if file_name.endswith(('.xlsx')):
+            if file_name.endswith(('.xlsx')): # For multiple extension  use ('.xlsx', '.csv') format
                 shutil.move(os.path.join(srcpath, file_name), destpath)
     except Exception as e:
         print('There was an error: ', e)
