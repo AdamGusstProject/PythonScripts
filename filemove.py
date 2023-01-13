@@ -1,5 +1,5 @@
 ##########################################################
-#  Automate file moves between folders (Dynamic Locations)
+#  Automate file moves between folders (Static Locations)
 #  Creation Date:  2/16/2022
 #  Revision:  v3 1/1/2023
 ##########################################################
@@ -14,11 +14,11 @@ print('''
 ============================
 ''')
 
-#  Source pathing (This will ask the user for source/destination folders.)
-srcpath = input('Where are the files located:  ')
-destpath = input('Where do you want the files placed:  ')
+#  Source pathing (Pathing is constant and doesn't require user input).
+srcpath = 'D:\Training\Python\scripts\source'
+destpath = 'D:\Training\Python\scripts\destination'
 
-#  Creating a list of the files in the source path
+#  Creating a list of the files in the source path.
 filelist = os.listdir(srcpath)
 
 
@@ -34,5 +34,6 @@ def filemove():
                 shutil.move(os.path.join(srcpath, file_name), destpath)
     except Exception as e:
         print('There was an error: ', e)
+
 
 filemove()
