@@ -21,10 +21,11 @@ print('Welcome, this is a simple nmap automation tool.')
 print("-----------------------------------------------------")
 
 ip_address = input("Please enter the IP address to scan: ")
-print("The IP you entered is", ip_address)
+scan_option = input('Pick your nMap scan option -  example sS or p: ')
+print("The IP you entered is: ", ip_address, 'with option: ', scan_option)
 type(ip_address)
 
-nmScan.scan(ip_address, '1-1024', '-sV')
+nmScan.scan(ip_address, '1-1024', '-'+ scan_option)
 
 print('System state: ', nmScan[ip_address].state())
 print('All protocols: ', nmScan[ip_address].all_protocols())

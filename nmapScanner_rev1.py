@@ -22,9 +22,10 @@ print('Welcome, this is a simple nmap automation tool.')
 print("-----------------------------------------------------")
 
 ip_address = input("Please enter the IP address to scan: ")
-print("The IP you entered is: ", ip_address)
-print()
+scan_option = input('Pick your nMap scan option -  example sS or p: ')
+print("The IP you entered is: ", ip_address, 'with option: ', scan_option)
 type(ip_address)
+print()
 
 #Testing connectivity to system
 
@@ -40,7 +41,7 @@ def testConnection(step1):
 
 
 testConnection(1)
-nmScan.scan(ip_address, '1-1024', '-sV')
+nmScan.scan(ip_address, '1-1024', '-'+ scan_option)
 
 #def outputInfo():
 #print('Nmap Version: ', nmScan.nmap_version)
