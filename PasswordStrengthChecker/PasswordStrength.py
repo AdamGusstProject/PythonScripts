@@ -22,21 +22,21 @@ def check_password_length(password):
 # This function checks the strength of the password.
 
 def check_password_strength(password):
-    if password.islower() == True:
+    if password.isdigit():
         return 0
-    elif password.isupper() == True:
-        return 0
-    elif password.isalpha() == True:
-        return 0
-    elif password.isdigit() == True:
-        return 0
+    elif password.isalpha():
+        if password.islower():
+            return 0
+        elif password.isupper():
+            return 0
+        else:
+            return 1 # Mixed alphabetic (contains both upper and lower)
     else:
         return 2
 
 
 # This function checks if the password contains any special characters.
 def check_special_chars(password):
-    #print(*[x for x in password if x in string.punctuation])
     if len([x for x in password if x in string.punctuation]) > 0:
         return 2
     else:
