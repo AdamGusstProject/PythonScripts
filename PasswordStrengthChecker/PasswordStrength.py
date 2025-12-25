@@ -7,8 +7,10 @@
 # Importing necessary libraries
 import string
 
-# Taking password input from the user.
-password = input("Enter your password: ")
+# This function takes the password input from the user.
+def get_password():
+    password = input("Enter your password: ")
+    return password
 
 # This functions checks the length of the password.
 def check_password_length(password):
@@ -43,28 +45,33 @@ def check_special_chars(password):
         return 0
 
 
+def score_password(pass_len, pass_special, pass_strength):
+    check_score = pass_len + pass_special + pass_strength
+    if check_score == 6:
+        return check_score, "Your password is very strong"
+    elif check_score == 5:
+        return check_score,"Your password is strong"
+    elif check_score == 4:
+        return check_score, "Your password is moderate"
+    elif check_score == 3:
+        return check_score, "Your password is weak"
+    elif check_score == 2:
+        return check_score, "Your password is very weak"
+    else:
+        return check_score, """You should use a password manager to generate a strong password. 
+        Good password practices include using a mix of uppercase and lowercase letters, numbers, and special characters"""
+
+
+
 # This function runs all the tests and returns the final score.
 
 def run_test():
+    password = get_password()
     pass_len = check_password_length(password)
     pass_special = check_special_chars(password)
     pass_strength = check_password_strength(password)
-
-    check_score = pass_len + pass_special + pass_strength
-    print("Your password score is", check_score)
-    if check_score == 6:
-        print("Your password is very strong")
-    elif check_score == 5:
-        print("Your password is strong")
-    elif check_score == 4:
-        print("Your password is moderate")
-    elif check_score == 3:
-        print("Your password is weak")
-    elif check_score == 2:
-        print("Your password is very weak")
-    else:
-        print("You should use a password manager to generate a strong password")
-        print("Good password practices include using a mix of uppercase and lowercase letters, numbers, and special characters")
-
+    score, message = score_password(pass_len, pass_special, pass_strength)
+    print("Your password score is:", score)
+    print(message)
 
 run_test()
