@@ -7,6 +7,16 @@
 # Importing necessary libraries
 import string
 
+
+# ANSI color codes for terminal output
+RED = "\033[91m"
+YELLOW = "\033[93m"
+GREEN = "\033[92m"
+BLUE = "\033[94m"
+RESET = "\033[0m"
+
+
+
 # This function takes the password input from the user.
 def get_password():
     password = input("Enter your password: ")
@@ -44,10 +54,16 @@ def check_special_chars(password):
     else:
         return 0
 
+def check_numeric_chars(password):
+    if any(x.isdigit() for x in password):
+        return 1
+    else:
+        return 0
 
-def score_password(pass_len, pass_special, pass_strength):
-    check_score = pass_len + pass_special + pass_strength
-    if check_score == 6:
+# This function scores the password based on length, special characters, and strength.
+def score_password(pass_len, pass_special, pass_strength, pass_numeric):
+    check_score = pass_len + pass_special + pass_strength + pass_numeric
+    if check_score >= 6:
         return check_score, "Your password is very strong"
     elif check_score == 5:
         return check_score,"Your password is strong"
@@ -58,8 +74,7 @@ def score_password(pass_len, pass_special, pass_strength):
     elif check_score == 2:
         return check_score, "Your password is very weak"
     else:
-        return check_score, """You should use a password manager to generate a strong password. 
-        Good password practices include using a mix of uppercase and lowercase letters, numbers, and special characters"""
+        return check_score, """You should use a password manager to generate a strong password. Good password practices include using a mix of uppercase and lowercase letters, numbers, and special characters"""
 
 
 
@@ -70,8 +85,42 @@ def run_test():
     pass_len = check_password_length(password)
     pass_special = check_special_chars(password)
     pass_strength = check_password_strength(password)
-    score, message = score_password(pass_len, pass_special, pass_strength)
-    print("Your password score is:", score)
-    print(message)
+    pass_numeric = check_numeric_chars(password)
+    score, message = score_password(pass_len, pass_special, pass_strength, pass_numeric)
+    if score >= 6:
+        color = GREEN
+    elif score == 5 or score == 4:
+        color = YELLOW
+    else:
+        color = RED
+    print(color + "Your password score is: " + str(score) + RESET)
+    print(color + message + RESET)
+
+# Detailed descriptions for each score component
+    length_descriptions = {
+    2: "strong",
+    1: "acceptable",
+    0: "too short"
+    } 
+    special_descriptions = {
+    2: "contains special characters",
+    0: "no special characters"
+    }
+    strength_descriptions = {
+    2: "strong (mix of letters, numbers, special characters)",
+    1: "moderate (mix of letters and numbers)",
+    0: "weak (only letters or numbers)"
+    }
+    numeric_descriptions = {
+    1: "contains numeric characters",
+    0: "no numeric characters"    
+    }
+
+# Detailed breakdown of the password analysis
+    print(BLUE + "---Breakdown---" + RESET)
+    print(BLUE + f"Length Score: {pass_len} " + length_descriptions[pass_len] + RESET)
+    print(BLUE + f"Special Characters Score: {pass_special} " + special_descriptions[pass_special] + RESET)
+    print(BLUE + f"Password Strength Score: {pass_strength} " + strength_descriptions[pass_strength] + RESET)
+    print(BLUE + f"Numeric Characters Score: {pass_numeric} " + numeric_descriptions[pass_numeric] + RESET)
 
 run_test()
