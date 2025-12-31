@@ -35,6 +35,7 @@ def check_password_length(password):
 
 def check_password_strength(password):
     if password.isdigit():
+
         return 0
     elif password.isalpha():
         if password.islower():
@@ -96,7 +97,7 @@ def run_test():
     print(color + "Your password score is: " + str(score) + RESET)
     print(color + message + RESET)
 
-# Detailed descriptions for each score component
+    # Detailed descriptions for each score component
     length_descriptions = {
     2: "strong",
     1: "acceptable",
@@ -116,11 +117,17 @@ def run_test():
     0: "no numeric characters"    
     }
 
-# Detailed breakdown of the password analysis
+    # Detailed breakdown of the password analysis
     print(BLUE + "---Breakdown---" + RESET)
     print(BLUE + f"Length Score: {pass_len} " + length_descriptions[pass_len] + RESET)
     print(BLUE + f"Special Characters Score: {pass_special} " + special_descriptions[pass_special] + RESET)
     print(BLUE + f"Password Strength Score: {pass_strength} " + strength_descriptions[pass_strength] + RESET)
     print(BLUE + f"Numeric Characters Score: {pass_numeric} " + numeric_descriptions[pass_numeric] + RESET)
 
-run_test()
+while True:
+    run_test()
+    if input("Do you want to check another password? (yes/no): ").lower() != 'yes':
+        color = RED
+        exit_message = "Goodbye! Thank you for using my password program."
+        print(color + exit_message + RESET)
+        break
