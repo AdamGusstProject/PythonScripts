@@ -1,0 +1,20 @@
+2025-01-01 08:15:12 INFO auth User admin logged in from 192.168.1.10
+2025-01-01 08:16:03 ERROR auth Failed login from 192.168.1.22
+2025-01-01 08:16:45 WARNING system High CPU usage detected on server01
+2025-01-01 08:17:10 INFO auth User jsmith logged in from 10.0.0.5
+2025-01-01 08:17:55 ERROR auth Failed login from 192.168.1.22
+2025-01-01 08:18:20 INFO system Scheduled backup completed on server02
+2025-01-01 08:19:02 WARNING system Disk space low on server01
+2025-01-01 08:19:44 INFO auth User admin logged out from 192.168.1.10
+2025-01-01 08:20:11 ERROR auth Failed login from 10.0.0.5
+2025-01-01 08:21:33 INFO auth User mjones logged in from 172.16.0.14
+2025-01-01 08:22:01 ERROR auth Failed login from 192.168.1.22
+2025-01-01 08:22:47 WARNING system Memory usage high on server03
+2025-01-01 08:23:15 INFO auth User jsmith logged out from 10.0.0.5
+2025-01-01 08:24:09 ERROR auth Failed login from 172.16.0.14
+2025-01-01 08:24:55 INFO system Antivirus scan completed on server01
+2025-01-01 08:25:32 WARNING system Network latency detected on server02
+2025-01-01 08:26:18 INFO auth User admin logged in from 192.168.1.10
+2025-01-01 08:27:04 ERROR auth Failed login from 192.168.1.22
+2025-01-01 08:27:59 INFO auth User mjones logged out from 172.16.0.14
+2025-01-01 08:28:41 WARNING system Temperature threshold exceeded on server03
