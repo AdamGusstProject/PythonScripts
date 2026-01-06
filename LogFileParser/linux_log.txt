@@ -11,6 +11,7 @@ Jun  1 00:30:01 server-prod-01 CRON[23254]: (root) CMD ([ -x /etc/init.d/anacron
 Jun  1 01:00:01 server-prod-01 CRON[23423]: (root) CMD (command -v debian-sa1 > /dev/null && debian-sa1 1 1)
 Jun  1 01:05:03 server-prod-01 dhclient[1234]: DHCPREQUEST for 192.168.1.100 on eth0 to 192.168.1.1 port 67
 Jun  1 01:05:03 server-prod-01 dhclient[1234]: DHCPACK from 192.168.1.1
+
 Jun  1 01:05:03 server-prod-01 dhclient[1234]: bound to 192.168.1.100 -- renewal in 3300 seconds.
 Jun  1 01:17:01 server-prod-01 CRON[23897]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
 Jun  1 01:20:15 server-prod-01 kernel: [47146.321890] [UFW BLOCK] IN=eth0 OUT= MAC=00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd SRC=198.51.100.23 DST=192.168.1.100 LEN=40 TOS=0x00 PREC=0x00 TTL=245 ID=54321 PROTO=TCP SPT=63122 DPT=22 WINDOW=65535 RES=0x00 SYN URGP=0
@@ -19,6 +20,7 @@ Jun  1 01:20:17 server-prod-01 kernel: [47148.589670] [UFW BLOCK] IN=eth0 OUT= M
 Jun  1 01:20:18 server-prod-01 sshd[23954]: [ERROR] Failed password for root from 198.51.100.23 port 63122 ssh2
 Jun  1 01:20:19 server-prod-01 sshd[23954]: [ERROR] Failed password for root from 198.51.100.23 port 63122 ssh2
 Jun  1 01:20:20 server-prod-01 sshd[23954]: [ERROR] Failed password for root from 198.51.100.23 port 63122 ssh2
+Jan 12 10:22
 Jun  1 01:20:21 server-prod-01 sshd[23954]: [CRITICAL] Disconnecting: Too many authentication failures for root from 198.51.100.23 port 63122 ssh2 [preauth]
 Jun  1 01:20:21 server-prod-01 sshd[23954]: PAM 5 more authentication failures; logname= uid=0 euid=0 tty=ssh ruser= rhost=198.51.100.23  user=root
 Jun  1 01:25:01 server-prod-01 sudo[24032]: admin : TTY=pts/0 ; PWD=/home/admin ; USER=root ; COMMAND=/usr/bin/apt update
@@ -34,6 +36,7 @@ Jun  1 01:30:15 server-prod-01 apt[24096]: Reading package lists...
 Jun  1 01:30:20 server-prod-01 apt[24096]: Building dependency tree...
 Jun  1 01:30:25 server-prod-01 apt[24096]: Reading state information...
 Jun  1 01:30:30 server-prod-01 apt[24096]: Calculating upgrade...
+Feb 3 14:55 server1
 Jun  1 01:30:45 server-prod-01 apt[24096]: The following packages will be upgraded: libssl1.1 openssl
 Jun  1 01:30:45 server-prod-01 apt[24096]: 2 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 Jun  1 01:30:46 server-prod-01 apt[24096]: Need to get 2,600 kB of archives.
@@ -53,6 +56,9 @@ Jun  1 01:45:01 server-prod-01 kernel: [49411.123456] [FATAL] EXT4-fs error (dev
 Jun  1 01:45:02 server-prod-01 kernel: [49412.234567] [FATAL] EXT4-fs (sda1): Remounting filesystem read-only
 Jun  1 01:45:03 server-prod-01 kernel: [49413.345678] [ERROR] JBD2: Detected IO errors while flushing file data on sda1-8
 Jun  1 01:45:04 server-prod-01 kernel: [49414.456789] [ERROR] Buffer I/O error on device sda1, logical block 12345678
+Jan 12 10:22:33 server1 sshd Failed password for root
+Jan 20 10:22:33 server1 sshd Failed password for root
+this is not a syslog line at all
 Jun  1 01:45:05 server-prod-01 smartd[1234]: Device: /dev/sda [SAT], SMART Failure: ATTRIBUTE 5 C5 196
 Jun  1 01:45:06 server-prod-01 smartd[1234]: [CRITICAL] Device: /dev/sda [SAT], failed SMART usage Attribute: Reallocated_Sector_Ct.
 Jun  1 01:45:07 server-prod-01 smartd[1234]: [WARNING] Device: /dev/sda [SAT], 65 Currently unreadable (pending) sectors
@@ -73,6 +79,7 @@ Jun  1 03:12:46 server-prod-01 systemd-logind[842]: New session 15 of user admin
 Jun  1 03:12:47 server-prod-01 sshd[24899]: Accepted publickey for admin from 203.0.113.42 port 56789 ssh2: RSA SHA256:AbCdEfGhIjKlMnOpQrStUvWxYz1234567890ABCDEFG
 Jun  1 03:15:01 server-prod-01 mdadm[24920]: [WARNING] RebuildStarted event detected on md device /dev/md0
 Jun  1 03:15:02 server-prod-01 mdadm[24920]: Rebuild started for /dev/md0 (device 2)
+Mar     5     12:00
 Jun  1 03:17:01 server-prod-01 CRON[24954]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
 Jun  1 03:30:01 server-prod-01 CRON[25023]: (root) CMD ([ -x /etc/init.d/anacron ] && /usr/sbin/invoke-rc.d anacron start >/dev/null)
 Jun  1 03:45:23 server-prod-01 mdadm[25134]: [ERROR] RebuildFinished event detected on md device /dev/md0, but rebuild failed

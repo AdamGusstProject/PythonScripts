@@ -14,11 +14,11 @@ Designed to reinforce clean architecture, modular parsing, and real‑world cybe
 
 ## Architecture (Early Stage)
 
-log_analyzer/
-│
-├── main.py               # Program entry point
-└── parsers/
-    └── syslog_parser.py  # Parser for syslog-style logs
+log_analyzer/  
+│  
+├── main.py               # Program entry point  
+└── parsers/  
+    └── syslog_parser.py  # Parser for syslog-style logs  
 
 
 The project is structured to support multiple log types in the future through modular parser files.
