@@ -21,8 +21,8 @@ def connect_to_device():
         net_connect = ConnectHandler(
             device_type='cisco_ios',
             host='10.0.0.100',
-            username='agusst',
-            password='password1'
+            username='#######',
+            password='#######'
         )
         return net_connect
 
