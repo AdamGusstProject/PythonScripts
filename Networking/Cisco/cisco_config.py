@@ -6,6 +6,9 @@
 
 # Importing necessary libraries
 from netmiko import ConnectHandler
+import csv
+from datetime import datetime
+import os
 
 # ANSI color codes for terminal output
 
@@ -21,16 +24,56 @@ def connect_to_device():
         net_connect = ConnectHandler(
             device_type='cisco_ios',
             host='10.0.0.100',
-            username='#######',
-            password='#######'
+            username='#####',
+            password='######',
+            secret='######'
         )
+        net_connect.enable()
         return net_connect
 
+# This function writes the evidence to a CSV file.
+def write_evidence_to_csv(evidence):
+    
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    filename = os.path.join(script_dir, "evidence_log.csv")
 
-# This function retrieves the device configuration.
-def get_device_configuration(net_connect):
-      output = net_connect.send_command('show ip interface brief')
-      return output
+    file_exists = False
+    try:
+        with open(filename, 'r'):
+            file_exists = True
+    except FileNotFoundError:
+        pass
+    with open(filename, mode='a', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=evidence.keys())
+        if not file_exists:
+          writer.writeheader()
+        writer.writerow(evidence)
+
+# This function writes the evidence to a text file.
+def write_evidence_to_text(evidence):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    filename = os.path.join(script_dir, "evidence_log.txt")
+
+    with open(filename, "a") as f:
+        f.write(f"Device: {evidence['device']}\n")
+        f.write(f"Command: {evidence['command']}\n")
+        f.write(f"Timestamp: {evidence['timestamp']}\n")
+        f.write("Output:\n")
+        f.write(evidence['output'])
+        f.write("\n" + ("-" * 80) + "\n\n")
+
+def run_command(net_connect, device, command):
+  output = net_connect.send_command(command)
+  timestamp = datetime.now().isoformat()
+  
+  evidence = {
+      "device": device,
+      "command": command,
+      "output": output,
+      "timestamp": timestamp
+  }
+  return evidence
+
 
 # This function disconnects from the network device.
 def disconnect_from_device(net_connect):
@@ -38,8 +81,11 @@ def disconnect_from_device(net_connect):
 
 def run_test():
   net_connect = connect_to_device()
-  output = get_device_configuration(net_connect)
+  evidence = run_command(net_connect, '10.0.0.100', 'show running-config')
+  write_evidence_to_csv(evidence)
+  write_evidence_to_text(evidence)
 
+  #output = get_device_configuration(net_connect)
   color = GREEN
   message = "Configuration Retrieved"
   print()
@@ -47,7 +93,7 @@ def run_test():
   print()
   print(color + "*" * 100 + RESET)
   print()
-  print(output)
+  print(evidence['output'])
   print()
   print(color + "*" * 100 + RESET)
   print()
