@@ -24,12 +24,24 @@ def connect_to_device():
         net_connect = ConnectHandler(
             device_type='cisco_ios',
             host='10.0.0.100',
-            username='#####',
-            password='######',
-            secret='######'
+            username='*****',
+            password='*****',
+            secret='*****' 
         )
         net_connect.enable()
         return net_connect
+
+def run_command(net_connect, device, command):
+  output = net_connect.send_command(command)
+  timestamp = datetime.now().isoformat()
+  
+  evidence = {
+      "device": device,
+      "command": command,
+      "output": output,
+      "timestamp": timestamp
+  }
+  return evidence
 
 # This function writes the evidence to a CSV file.
 def write_evidence_to_csv(evidence):
@@ -62,18 +74,6 @@ def write_evidence_to_text(evidence):
         f.write(evidence['output'])
         f.write("\n" + ("-" * 80) + "\n\n")
 
-def run_command(net_connect, device, command):
-  output = net_connect.send_command(command)
-  timestamp = datetime.now().isoformat()
-  
-  evidence = {
-      "device": device,
-      "command": command,
-      "output": output,
-      "timestamp": timestamp
-  }
-  return evidence
-
 
 # This function disconnects from the network device.
 def disconnect_from_device(net_connect):
@@ -81,22 +81,25 @@ def disconnect_from_device(net_connect):
 
 def run_test():
   net_connect = connect_to_device()
-  evidence = run_command(net_connect, '10.0.0.100', 'show running-config')
-  write_evidence_to_csv(evidence)
-  write_evidence_to_text(evidence)
+  command = ["show ip interface brief", 
+  "show version", "show running-config | include hostname"]
+  for cmd in command:
+    evidence = run_command(net_connect, '10.0.0.100', cmd)
+    write_evidence_to_csv(evidence)
+    write_evidence_to_text(evidence)
 
-  #output = get_device_configuration(net_connect)
-  color = GREEN
-  message = "Configuration Retrieved"
-  print()
-  print(color + message + RESET)
-  print()
-  print(color + "*" * 100 + RESET)
-  print()
-  print(evidence['output'])
-  print()
-  print(color + "*" * 100 + RESET)
-  print()
+    #output = get_device_configuration(net_connect)
+    color = GREEN
+    message = "Configuration Retrieved"
+    print()
+    print(color + message + RESET)
+    print()
+    print(color + "*" * 100 + RESET)
+    print()
+    print(evidence['output'])
+    print()
+    print(color + "*" * 100 + RESET)
+    print()
 
   disconnect_from_device(net_connect)
 
