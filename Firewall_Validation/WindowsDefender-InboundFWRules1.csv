@@ -1,0 +1,14 @@
+Name,Group,Profile,Enabled,Action,Override,Program,Local Address,Remote Address,Protocol,Local Port,Remote Port,Authorized Users,Authorized Computers,Authorized Local Principals,Local User Owner,PolicyAppId,Application Package
+Call of Duty: Black Ops II,,All,Yes,Allow,No,C:\Program Files (x86)\Steam\steamapps\common\Call of Duty Black Ops II\t6sp.exe,Any,Any,UDP,Any,Any,Any,Any,Any,Any,None,Any
+Call of Duty: Black Ops II,,All,Yes,Allow,No,C:\Program Files (x86)\Steam\steamapps\common\Call of Duty Black Ops II\t6sp.exe,Any,Any,TCP,Any,Any,Any,Any,Any,Any,None,Any
+Call of Duty?: Modern Warfare? 3 (2011),,All,Yes,Allow,No,C:\Program Files (x86)\Steam\steamapps\common\Call of Duty Modern Warfare 3\iw5sp.exe,Any,Any,TCP,Any,Any,Any,Any,Any,Any,None,Any
+Call of Duty?: Modern Warfare? 3 (2011),,All,Yes,Allow,No,C:\Program Files (x86)\Steam\steamapps\common\Call of Duty Modern Warfare 3\iw5sp.exe,Any,Any,UDP,Any,Any,Any,Any,Any,Any,None,Any
+Cities: Skylines II,,All,Yes,Allow,No,C:\Program Files (x86)\Steam\steamapps\common\Cities Skylines II\Launcher\dowser.exe,Any,Any,UDP,Any,Any,Any,Any,Any,Any,None,Any
+Cities: Skylines II,,All,Yes,Allow,No,C:\Program Files (x86)\Steam\steamapps\common\Cities Skylines II\Launcher\dowser.exe,Any,Any,TCP,Any,Any,Any,Any,Any,Any,None,Any
+Dynamips,,Public,Yes,Allow,No,C:\Program Files\GNS3\dynamips\dynamips.exe,Any,Any,TCP,Any,Any,Any,Any,Any,Any,None,Any
+Dynamips,,Public,Yes,Allow,No,C:\Program Files\GNS3\dynamips\dynamips.exe,Any,Any,UDP,Any,Any,Any,Any,Any,Any,None,Any
+GNS3 server,,Public,Yes,Allow,No,C:\Program Files\GNS3\gns3server.exe,Any,Any,TCP,Any,Any,Any,Any,Any,Any,None,Any
+GNS3 server,,Public,Yes,Allow,No,C:\Program Files\GNS3\gns3server.exe,Any,Any,UDP,Any,Any,Any,Any,Any,Any,None,Any
+GNS3 uBridge,,Public,Yes,Allow,No,C:\Program Files\GNS3\ubridge\ubridge.exe,Any,Any,UDP,Any,Any,Any,Any,Any,Any,None,Any
+GNS3 uBridge,,Public,Yes,Allow,No,C:\Program Files\GNS3\ubridge\ubridge.exe,Any,Any,TCP,Any,Any,Any,Any,Any,Any,None,Any
+Left 4 Dead 2,,All,Yes,Allow,No,C:\Program Files (x86)\Steam\steamapps\common\Left 4 Dead 2\left4dead2.exe,Any,Any,UDP,Any,Any,Any,Any,Any,Any,None,Any
