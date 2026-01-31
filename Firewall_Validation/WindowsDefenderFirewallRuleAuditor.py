@@ -43,9 +43,9 @@ def run_test():
     color = GREEN
     fw_rules = import_firewall_rules(file_location())
     rule_count = len(fw_rules)
-    for line in fw_rules:
+    for index, line in enumerate(fw_rules, start=1):
         print(color + "*" * 100 + RESET)
-        print(line)
+        print(f"Rule {index}: {line}")
     print(color + "*" * 100 + RESET)
     print()
     print(f'There are {rule_count} total firewall rules')
