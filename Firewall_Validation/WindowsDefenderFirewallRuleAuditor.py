@@ -44,9 +44,14 @@ def import_firewall_rules(file_path):
         return fw_rows
 
 def high_value(line, direction):
+    color1 = GREEN
+    color2 = RED
     print(f"Name:        {line[0]}")  # This section prints only the highlights
     print(f"Profile:     {line[2]}")
-    print(f"Enabled:     {line[3]}")
+    if (line[3]) == "Yes":
+        print(color1 + f"Enabled:     {line[3]}" + RESET)
+    else:
+        print(color2 + f"Enabled:     {line[3]}" + RESET)
     print(f"Action:      {line[4]}")
     print(f"Program:     {line[6]}")
     print(f"Local Port:  {line[10]}")
@@ -56,8 +61,6 @@ def high_value(line, direction):
 # This function runs the tests
 
 def run_test():
-    color1 = GREEN
-    color2 = RED
     color3 = YELLOW
     fw_rules = import_firewall_rules(file_location())
     rule_count = len(fw_rules)
