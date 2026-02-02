@@ -377,5 +377,5 @@ WFD ASP Coordination Protocol (UDP-In),WLAN Service - WFD Application Services P
 WFD Driver-only (TCP-In),WLAN Service - WFD Services Kernel Mode Driver Rules,All,Yes,Allow,No,System,Any,Any,TCP,Any,Any,Any,Any,Any,Any,None,Any
 WFD Driver-only (UDP-In),WLAN Service - WFD Services Kernel Mode Driver Rules,All,Yes,Allow,No,System,Any,Any,UDP,Any,Any,Any,Any,Any,Any,None,Any
 Work or school account,Work or school account,"Domain, Private",Yes,Allow,No,Any,Any,Any,Any,Any,Any,Any,Any,Any,NT AUTHORITY\SYSTEM,None,Microsoft.AAD.BrokerPlugin_cw5n1h2txyewy
-Xbox,Xbox,"Domain, Private",Yes,Allow,No,Any,Any,Any,Any,Any,Any,Any,Any,Any,LabZone\agusst,None,Microsoft.GamingApp_8wekyb3d8bbwe
+Xbox,Xbox,"Domain, Private",No,Block,No,Any,Any,Any,Any,Any,Any,Any,Any,Any,LabZone\agusst,None,Microsoft.GamingApp_8wekyb3d8bbwe
 Your account,Your account,"Domain, Private",Yes,Allow,No,Any,Any,Any,Any,Any,Any,Any,Any,Any,NT AUTHORITY\SYSTEM,None,Microsoft.Windows.CloudExperienceHost_cw5n1h2txyewy

@@ -16,6 +16,11 @@ GREEN = "\033[92m"
 BLUE = "\033[94m"
 RESET = "\033[0m"
 
+color1 = GREEN
+color2 = RED
+color3 = YELLOW
+color4 = BLUE
+
 # This fucntion defiles file path.
 
 def file_location():
@@ -44,15 +49,18 @@ def import_firewall_rules(file_path):
         return fw_rows
 
 def high_value(line, direction):
-    color1 = GREEN
-    color2 = RED
+    enabled_value = line[3].strip().lower()
+    action_value = line[4].strip().lower()
     print(f"Name:        {line[0]}")  # This section prints only the highlights
     print(f"Profile:     {line[2]}")
-    if (line[3]) == "Yes":
+    if enabled_value in ("yes", "true", "enabled", "1"):
         print(color1 + f"Enabled:     {line[3]}" + RESET)
     else:
         print(color2 + f"Enabled:     {line[3]}" + RESET)
-    print(f"Action:      {line[4]}")
+    if action_value in ("allow", "log only", "bypass", "force allow"):
+        print(color1 + f"Action:      {line[4]}" + RESET)
+    else:
+        print(color2 + f"Action:      {line[4]}" + RESET)
     print(f"Program:     {line[6]}")
     print(f"Local Port:  {line[10]}")
     print(f"Remote Port: {line[11]}")
@@ -61,12 +69,14 @@ def high_value(line, direction):
 # This function runs the tests
 
 def run_test():
-    color3 = YELLOW
     fw_rules = import_firewall_rules(file_location())
     rule_count = len(fw_rules)
     direction = rule_direction() # This is getting the firewall rule direction
+    print()
+    print(color3 + "##########  Firewall Rule Audit Report  ##########" + RESET)
+    print()
 
-    print("This is a list of all the rules.")
+    print(color3 + "This is a list of all the rules." + RESET)
     for index, line in enumerate(fw_rules, start=1):
         print(color3 + "*" * 100 + RESET)  
         print()
@@ -74,7 +84,7 @@ def run_test():
         print()
         print(color3 + "_" * 100 + RESET) 
         print()
-        print("High-Value Fields: ")
+        print(color3 + "High-value Fields: " + RESET)
         print()
         high_value(line, direction) # This prints high value fields
         print()
@@ -84,7 +94,7 @@ def run_test():
     print()
     print(color3 + f"There are {rule_count} total firewall rules" + RESET)
     print()
-    print(color3 + "##########  Analysys Complete  ##########" + RESET)
+    print(color3 + "##########  Analysis Complete  ##########" + RESET)
     print()
     print()
 run_test()
