@@ -48,6 +48,8 @@ def import_firewall_rules(file_path):
             fw_rows.append(row)
         return fw_rows
 
+# This fuction pulls out high value fields.
+
 def high_value(line, direction):
     enabled_value = line[3].strip().lower()
     action_value = line[4].strip().lower()
@@ -73,7 +75,11 @@ def run_test():
     rule_count = len(fw_rules)
     direction = rule_direction() # This is getting the firewall rule direction
     print()
-    print(color3 + "##########  Firewall Rule Audit Report  ##########" + RESET)
+    print(color3 + """
+          ==============================================
+                    Firewall Rule Audit Report          
+          ==============================================
+          """ + RESET)
     print()
 
     print(color3 + "This is a list of all the rules." + RESET)
