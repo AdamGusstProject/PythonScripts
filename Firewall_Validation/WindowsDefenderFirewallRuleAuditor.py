@@ -68,6 +68,15 @@ def high_value(line, direction):
     print(f"Remote Port: {line[11]}")
     print(f"Direction:   {direction}")
 
+# This functions counts the number of rules that are enabled and disabled.
+
+def enable_disable(line):
+    enabled = line[3].strip().lower()
+    if enabled in ("enabled", "true", "1", "yes"):
+        return 1
+    else:
+        return 0
+
 
 def normalized_rule(csv_row):
     return{
@@ -115,8 +124,12 @@ def run_test():
     print()
     print(color3 + "NOTE: Rule Numbering Starts at 2 to keep aligned with the CSV index." + RESET)
     print()
+
     signatures = {}
-    for index, line in enumerate(fw_rules, start=2):
+    index = 2
+    enabled_counter = 0
+    disabled_counter = 0
+    for line in fw_rules:
         rule = normalized_rule(line)
         sig = strict_signature(rule)
         if sig not in signatures:
@@ -135,6 +148,18 @@ def run_test():
         print()
         high_value(line, direction) # This prints high value fields
         print()
+
+        index += 1
+
+        if enable_disable(line) == 1:
+            enabled_counter += 1
+        else:
+            disabled_counter += 1
+    print()
+    print(color3 + "========== Enable / Disable Rule Count ==========" + RESET)
+    print()
+    print(f"There are {enabled_counter} rules enabled and {disabled_counter} rules disabled.")
+        
 
     print()
     print(color3 + "========== Strict Duplicate Rules ==========" + RESET)
