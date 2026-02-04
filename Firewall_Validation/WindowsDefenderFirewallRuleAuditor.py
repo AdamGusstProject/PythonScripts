@@ -68,6 +68,35 @@ def high_value(line, direction):
     print(f"Remote Port: {line[11]}")
     print(f"Direction:   {direction}")
 
+
+def normalized_rule(csv_row):
+    return{
+        "Name": csv_row[0],
+        "Profile": csv_row[2],
+        "Enabled": csv_row[3],
+        "Action": csv_row[4],
+        "Program": csv_row[6],
+        "Local Address": csv_row[7],
+        "Remote Address": csv_row[8],
+        "Protocol": csv_row[9],
+        "Local Port": csv_row[10],
+        "Remote Port": csv_row[11],
+    }
+
+def strict_signature(rule_dict):
+    return(
+        rule_dict["Name"],
+        rule_dict["Profile"],
+        rule_dict["Enabled"],
+        rule_dict["Action"],
+        rule_dict["Program"],
+        rule_dict["Local Address"],
+        rule_dict["Remote Address"],
+        rule_dict["Protocol"],
+        rule_dict["Local Port"],
+        rule_dict["Remote Port"]
+    )
+
 # This function runs the tests
 
 def run_test():
@@ -83,7 +112,19 @@ def run_test():
     print()
 
     print(color3 + "This is a list of all the rules." + RESET)
-    for index, line in enumerate(fw_rules, start=1):
+    print()
+    print(color3 + "NOTE: Rule Numbering Starts at 2 to keep aligned with the CSV index." + RESET)
+    print()
+    signatures = {}
+    for index, line in enumerate(fw_rules, start=2):
+        rule = normalized_rule(line)
+        sig = strict_signature(rule)
+        if sig not in signatures:
+            signatures[sig] = [index]
+        else:
+            signatures[sig].append(index)
+
+        
         print(color3 + "*" * 100 + RESET)  
         print()
         print(f"Rule {index}: {line}")  # This prints all records
@@ -94,11 +135,25 @@ def run_test():
         print()
         high_value(line, direction) # This prints high value fields
         print()
-    
+
+    print()
+    print(color3 + "========== Strict Duplicate Rules ==========" + RESET)
+    print()
+
+    found_any = False
+    for sig, rule_numbers in signatures.items():
+        if len(rule_numbers) >1:
+            print("Duplicate found: ", rule_numbers)
+            found_any = True
+        else:
+            continue
+    if not found_any:
+        print("No duplicates found.")
+
     print()
     print(color3 + "*" * 100 + RESET)
     print()
-    print(color3 + f"There are {rule_count} total firewall rules" + RESET)
+    print(color3 + f"There are {rule_count} total firewall rules (CSV lines 2 through {rule_count + 1})" + RESET)
     print()
     print(color3 + "##########  Analysis Complete  ##########" + RESET)
     print()
