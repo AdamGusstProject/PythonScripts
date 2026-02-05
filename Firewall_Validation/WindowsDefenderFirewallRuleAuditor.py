@@ -78,6 +78,19 @@ def enable_disable(line):
         return 0
 
 
+def enable_disable_sumary(fw_rules):
+    enabled_counter = 0
+    disabled_counter = 0
+    for line in fw_rules:
+        if enable_disable(line) == 1:
+            enabled_counter += 1
+        else:
+            disabled_counter += 1
+
+    return enabled_counter, disabled_counter
+
+# Normalizing rules and building signatures
+
 def normalized_rule(csv_row):
     return{
         "Name": csv_row[0],
@@ -106,9 +119,24 @@ def strict_signature(rule_dict):
         rule_dict["Remote Port"]
     )
 
+def dup_detection(fw_rules):
+    signatures = {}
+    index = 2
+    for line in fw_rules:
+        rule = normalized_rule(line)
+        sig = strict_signature(rule)
+        if sig not in signatures:
+            signatures[sig] = [index]
+        else:
+            signatures[sig].append(index)
+        index += 1
+    return signatures
+
+
+
 # This function runs the tests
 
-def run_test():
+def main():
     fw_rules = import_firewall_rules(file_location())
     rule_count = len(fw_rules)
     direction = rule_direction() # This is getting the firewall rule direction
@@ -125,19 +153,8 @@ def run_test():
     print(color3 + "NOTE: Rule Numbering Starts at 2 to keep aligned with the CSV index." + RESET)
     print()
 
-    signatures = {}
     index = 2
-    enabled_counter = 0
-    disabled_counter = 0
     for line in fw_rules:
-        rule = normalized_rule(line)
-        sig = strict_signature(rule)
-        if sig not in signatures:
-            signatures[sig] = [index]
-        else:
-            signatures[sig].append(index)
-
-        
         print(color3 + "*" * 100 + RESET)  
         print()
         print(f"Rule {index}: {line}")  # This prints all records
@@ -148,23 +165,25 @@ def run_test():
         print()
         high_value(line, direction) # This prints high value fields
         print()
-
         index += 1
 
-        if enable_disable(line) == 1:
-            enabled_counter += 1
-        else:
-            disabled_counter += 1
+    # This section counts the enabled and disabled rules.
+
+    enabled_counter, disabled_counter = enable_disable_sumary(fw_rules)
+
     print()
     print(color3 + "========== Enable / Disable Rule Count ==========" + RESET)
     print()
-    print(f"There are {enabled_counter} rules enabled and {disabled_counter} rules disabled.")
-        
+    print(f"Total number of Enabled rules: {enabled_counter}")
+    print(f"Total number of Disabled rules: {disabled_counter}")
 
+
+    # This sectino looks for duplicate rules
+
+    signatures = dup_detection(fw_rules)
     print()
     print(color3 + "========== Strict Duplicate Rules ==========" + RESET)
     print()
-
     found_any = False
     for sig, rule_numbers in signatures.items():
         if len(rule_numbers) >1:
@@ -175,6 +194,7 @@ def run_test():
     if not found_any:
         print("No duplicates found.")
 
+
     print()
     print(color3 + "*" * 100 + RESET)
     print()
@@ -183,4 +203,5 @@ def run_test():
     print(color3 + "##########  Analysis Complete  ##########" + RESET)
     print()
     print()
-run_test()
+
+main()
