@@ -48,6 +48,21 @@ def import_firewall_rules(file_path):
             fw_rows.append(row)
         return fw_rows
 
+
+# This function creates a menu for the users to choose what they want to see.
+
+def menu():
+    print('''
+        What data would you like to see:
+        1. Show high-value fields only
+        2. Show duplicate rules 
+        3. Full audit
+        4. Exit audit
+        ''')
+    choice = input("Enter your selection: ")
+    return choice
+
+
 # This fuction pulls out high value fields.
 
 def high_value(line, direction):
@@ -133,33 +148,25 @@ def dup_detection(fw_rules):
     return signatures
 
 
-
-# This function runs the tests
-
-def main():
-    fw_rules = import_firewall_rules(file_location())
-    rule_count = len(fw_rules)
-    direction = rule_direction() # This is getting the firewall rule direction
-    print()
-    print(color3 + """
-          ==============================================
-                    Firewall Rule Audit Report          
-          ==============================================
-          """ + RESET)
-    print()
-
-    print(color3 + "This is a list of all the rules." + RESET)
-    print()
-    print(color3 + "NOTE: Rule Numbering Starts at 2 to keep aligned with the CSV index." + RESET)
-    print()
-
+def full_audit(fw_rules, rule_count, direction):
     index = 2
     for line in fw_rules:
+        print()
+        print(color3 + """
+            ==============================================
+                        Firewall Rule Audit Report          
+            ==============================================
+            """ + RESET)
+        print()
         print(color3 + "*" * 100 + RESET)  
         print()
         print(f"Rule {index}: {line}")  # This prints all records
         print()
         print(color3 + "_" * 100 + RESET) 
+        print()
+        print(color3 + "All Rules in a Dictionary" + RESET)
+        print()
+        print(normalized_rule(line))
         print()
         print(color3 + "High-value Fields: " + RESET)
         print()
@@ -193,8 +200,6 @@ def main():
             continue
     if not found_any:
         print("No duplicates found.")
-
-
     print()
     print(color3 + "*" * 100 + RESET)
     print()
@@ -202,6 +207,49 @@ def main():
     print()
     print(color3 + "##########  Analysis Complete  ##########" + RESET)
     print()
+
+
+# This function runs the tests
+
+def main():
+    fw_rules = import_firewall_rules(file_location())
+    rule_count = len(fw_rules)
+    direction = rule_direction() # This is getting the firewall rule direction
     print()
+    print()
+
+    while True:  # This section invokes a menu
+        choice = menu()
+        if choice == "1":
+            for line in fw_rules:
+                print()
+                high_value(line, direction)
+                print()
+            input("Press enter to return to the menu ... ")
+            continue
+
+        elif choice == "2":
+            signatures = dup_detection(fw_rules)
+            found_any = False
+            for sig, rule_numbers in signatures.items():
+                if len(rule_numbers) >1:
+                    print("Duplicate found: ", rule_numbers)
+                    found_any = True
+                else:
+                    continue
+            if not found_any:
+                print("No duplicates found.")
+            input("Press enter to return to the menu ... ")
+            continue
+        
+        elif choice == "3":
+            full_audit(fw_rules, rule_count, direction)
+            input("Press enter to return to the menu ... ")
+            continue
+
+        elif choice == "4":
+            print("Exiting program")
+            return
+
 
 main()
