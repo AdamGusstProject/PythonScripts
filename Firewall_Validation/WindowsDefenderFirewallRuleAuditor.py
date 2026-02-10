@@ -7,6 +7,7 @@
 # Importing necessary libraries
 
 import csv
+import os
 
 # ANSI color codes for terminal output
 
@@ -24,17 +25,28 @@ color4 = BLUE
 # This fucntion defiles file path.
 
 def file_location():
-    file_path = input("Enter the log file path: ")
-    return file_path
+    while True:
+        file_path = input("Enter the log file path: ")
+        if os.path.exists(file_path):
+            return file_path
+        else:
+            print(color2 + f"File does not exist: {file_path}" + RESET)
+        
+
 
 # This function looks for rule direction Inbound or Outbound
 
 def rule_direction():
-    direction = input("Are these inbound or outbound rules? Enter 1 for inbound or 2 for outbound: ")
-    if direction == "1":
-        return "inbound"
-    else:
-        return "outbound"
+    while True:
+        direction = input("Are these inbound or outbound rules? Enter 1 for inbound or 2 for outbound: ")
+        if direction == "1":
+            return "inbound"
+        elif direction == "2":
+            return "outbound"
+        else:
+            print(color2 + f"Your choice was not 1 or 2: {direction}" + RESET)
+        
+        
 
 
 # This function imports the Windows Defender Firewall rules from a CSV file.
@@ -57,7 +69,8 @@ def menu():
         1. Show high-value fields only
         2. Show duplicate rules 
         3. Full audit
-        4. Exit audit
+        4. Show enabled disabled counts
+        5. Exit audit
         ''')
     choice = input("Enter your selection: ")
     return choice
@@ -104,6 +117,15 @@ def enable_disable_sumary(fw_rules):
 
     return enabled_counter, disabled_counter
 
+# Enable / disable function
+
+def show_enable_disable(fw_rules):
+    enabled, disabled = enable_disable_sumary(fw_rules)
+    print()
+    print(f"Enable rules: {enabled}")
+    print(f"Disabled rules: {disabled}")
+    print()
+
 # Normalizing rules and building signatures
 
 def normalized_rule(csv_row):
@@ -146,6 +168,21 @@ def dup_detection(fw_rules):
             signatures[sig].append(index)
         index += 1
     return signatures
+
+def show_duplicates(fw_rules):
+    signatures = dup_detection(fw_rules)
+    found_any = False
+    for sig, rule_numbers in signatures.items():
+        if len(rule_numbers) >1:
+            print("Duplicate found: ", rule_numbers)
+            found_any = True
+        else:
+            continue
+    if not found_any:
+        print("No duplicates found.")
+
+
+
 
 
 def full_audit(fw_rules, rule_count, direction):
@@ -229,16 +266,7 @@ def main():
             continue
 
         elif choice == "2":
-            signatures = dup_detection(fw_rules)
-            found_any = False
-            for sig, rule_numbers in signatures.items():
-                if len(rule_numbers) >1:
-                    print("Duplicate found: ", rule_numbers)
-                    found_any = True
-                else:
-                    continue
-            if not found_any:
-                print("No duplicates found.")
+            show_duplicates(fw_rules)
             input("Press enter to return to the menu ... ")
             continue
         
@@ -248,8 +276,12 @@ def main():
             continue
 
         elif choice == "4":
-            print("Exiting program")
-            return
+            show_enable_disable(fw_rules)
+            input("Press enter to return to the menu ... ")
+            continue
 
+        elif choice == "5":
+            print("Exiting program")
+        break
 
 main()
