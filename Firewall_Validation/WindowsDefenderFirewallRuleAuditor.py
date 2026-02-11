@@ -9,6 +9,7 @@
 import csv
 import os
 
+
 # ANSI color codes for terminal output
 
 RED = "\033[91m"
@@ -64,16 +65,31 @@ def import_firewall_rules(file_path):
 # This function creates a menu for the users to choose what they want to see.
 
 def menu():
-    print('''
-        What data would you like to see:
-        1. Show high-value fields only
-        2. Show duplicate rules 
-        3. Full audit
-        4. Show enabled disabled counts
-        5. Exit audit
-        ''')
-    choice = input("Enter your selection: ")
-    return choice
+    while True:
+        print('''
+            What data would you like to see:
+            1. Show high-value fields only
+            2. Show duplicate rules 
+            3. Full audit
+            4. Show enabled disabled counts
+            5. Exit audit
+            ''')
+        
+        choice = input("Enter your selection: ")
+        if choice in ("1", "2", "3", "4", "5"):
+            return choice
+        else:
+            print(color2 + f"You need to enter a number between 1 and 5, try again." + RESET)
+
+# This function clears the screen and lives after the menu choice in main()
+
+def clear_screen():
+    if os.name == 'nt':  # Windows
+        os.system('cls')
+    else:
+        os.system('clear') # MAC and Linux
+
+
 
 
 # This fuction pulls out high value fields.
@@ -258,6 +274,7 @@ def main():
     while True:  # This section invokes a menu
         choice = menu()
         if choice == "1":
+            clear_screen()
             for line in fw_rules:
                 print()
                 high_value(line, direction)
@@ -266,22 +283,27 @@ def main():
             continue
 
         elif choice == "2":
+            clear_screen()
             show_duplicates(fw_rules)
             input("Press enter to return to the menu ... ")
             continue
         
         elif choice == "3":
+            clear_screen()
             full_audit(fw_rules, rule_count, direction)
             input("Press enter to return to the menu ... ")
             continue
 
         elif choice == "4":
+            clear_screen()
             show_enable_disable(fw_rules)
             input("Press enter to return to the menu ... ")
             continue
 
         elif choice == "5":
+            print()
             print("Exiting program")
+            print()
         break
 
 main()
