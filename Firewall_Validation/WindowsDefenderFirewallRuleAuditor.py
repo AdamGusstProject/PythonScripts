@@ -12,16 +12,30 @@ import os
 
 # ANSI color codes for terminal output
 
-RED = "\033[91m"
-YELLOW = "\033[93m"
-GREEN = "\033[92m"
-BLUE = "\033[94m"
+RED     = "\033[31m"
+GREEN   = "\033[32m"
+YELLOW  = "\033[33m"
+BLUE    = "\033[34m"
+MAGENTA = "\033[35m"
+CYAN    = "\033[36m"
+WHITE   = "\033[37m"
 RESET = "\033[0m"
 
-color1 = GREEN
-color2 = RED
-color3 = YELLOW
-color4 = BLUE
+BG_RED     = "\033[41m"
+BG_GREEN   = "\033[42m"
+BG_YELLOW  = "\033[43m"
+BG_BLUE    = "\033[44m"
+BG_MAGENTA = "\033[45m"
+BG_CYAN    = "\033[46m"
+BG_WHITE   = "\033[47m"
+
+BOLD      = "\033[1m"
+DIM       = "\033[2m"
+ITALIC    = "\033[3m"
+UNDERLINE = "\033[4m"
+REVERSE   = "\033[7m"
+
+
 
 # This fucntion defiles file path.
 
@@ -31,7 +45,7 @@ def file_location():
         if os.path.exists(file_path):
             return file_path
         else:
-            print(color2 + f"File does not exist: {file_path}" + RESET)
+            print(RED + f"File does not exist: {file_path}" + RESET)
         
 
 
@@ -66,20 +80,24 @@ def import_firewall_rules(file_path):
 
 def menu():
     while True:
-        print('''
-            What data would you like to see:
-            1. Show high-value fields only
-            2. Show duplicate rules 
-            3. Full audit
-            4. Show enabled disabled counts
-            5. Exit audit
+        print()
+        print(f'''
+            {YELLOW}{BOLD}======= Firewall Rule Auditor ====== {RESET}
+            {YELLOW}{BOLD}____________________________________ {RESET}
+            
+            {CYAN}1. Show high-value fields only {RESET}
+            {CYAN}2. Show duplicate rules {RESET} 
+            {CYAN}3. Search rules by port {RESET}
+            {CYAN}4. Show enabled disabled counts {RESET}
+            {CYAN}5. Full audit {RESET}
+            {CYAN}6. Exit audit {RESET}
             ''')
         
-        choice = input("Enter your selection: ")
-        if choice in ("1", "2", "3", "4", "5"):
+        choice = input(f"{CYAN}Enter your selection: {RESET}").strip()
+        if choice in ("1", "2", "3", "4", "5", "6"):
             return choice
         else:
-            print(color2 + f"You need to enter a number between 1 and 5, try again." + RESET)
+            print(RED + f"You need to enter a number between 1 and 5, try again." + RESET)
 
 # This function clears the screen and lives after the menu choice in main()
 
@@ -100,13 +118,13 @@ def high_value(line, direction):
     print(f"Name:        {line[0]}")  # This section prints only the highlights
     print(f"Profile:     {line[2]}")
     if enabled_value in ("yes", "true", "enabled", "1"):
-        print(color1 + f"Enabled:     {line[3]}" + RESET)
+        print(GREEN + f"Enabled:     {line[3]}" + RESET)
     else:
-        print(color2 + f"Enabled:     {line[3]}" + RESET)
+        print(RED + f"Enabled:     {line[3]}" + RESET)
     if action_value in ("allow", "log only", "bypass", "force allow"):
-        print(color1 + f"Action:      {line[4]}" + RESET)
+        print(GREEN + f"Action:      {line[4]}" + RESET)
     else:
-        print(color2 + f"Action:      {line[4]}" + RESET)
+        print(RED + f"Action:      {line[4]}" + RESET)
     print(f"Program:     {line[6]}")
     print(f"Local Port:  {line[10]}")
     print(f"Remote Port: {line[11]}")
@@ -198,30 +216,56 @@ def show_duplicates(fw_rules):
         print("No duplicates found.")
 
 
+# This function searches for port numbers
+
+def get_port():
+    while True:
+        port = input("Enter the port you want to search for: ").strip()
+        if port.isdigit():
+            return port
+        else:
+            print("That port number is not in the rule set. Enter a port: ")
+
+def search_port(fw_rules, port, direction):
+    found_any = False
+    for line in fw_rules:
+        if line[10].strip() == port:
+            high_value(line, direction)  # or print(normalized_rule(line))
+            found_any = True
+            print()
+            print()
+
+    if not found_any:
+        print("No rules found for that port.")
+        print()
+        print()
 
 
+
+
+# Function for full audit report
 
 def full_audit(fw_rules, rule_count, direction):
     index = 2
     for line in fw_rules:
         print()
-        print(color3 + """
+        print(YELLOW + """
             ==============================================
                         Firewall Rule Audit Report          
             ==============================================
             """ + RESET)
         print()
-        print(color3 + "*" * 100 + RESET)  
+        print(YELLOW + "*" * 100 + RESET)  
         print()
         print(f"Rule {index}: {line}")  # This prints all records
         print()
-        print(color3 + "_" * 100 + RESET) 
+        print(YELLOW + "_" * 100 + RESET) 
         print()
-        print(color3 + "All Rules in a Dictionary" + RESET)
+        print(YELLOW + "All Rules in a Dictionary" + RESET)
         print()
         print(normalized_rule(line))
         print()
-        print(color3 + "High-value Fields: " + RESET)
+        print(YELLOW + "High-value Fields: " + RESET)
         print()
         high_value(line, direction) # This prints high value fields
         print()
@@ -232,7 +276,7 @@ def full_audit(fw_rules, rule_count, direction):
     enabled_counter, disabled_counter = enable_disable_sumary(fw_rules)
 
     print()
-    print(color3 + "========== Enable / Disable Rule Count ==========" + RESET)
+    print(YELLOW + "========== Enable / Disable Rule Count ==========" + RESET)
     print()
     print(f"Total number of Enabled rules: {enabled_counter}")
     print(f"Total number of Disabled rules: {disabled_counter}")
@@ -242,7 +286,7 @@ def full_audit(fw_rules, rule_count, direction):
 
     signatures = dup_detection(fw_rules)
     print()
-    print(color3 + "========== Strict Duplicate Rules ==========" + RESET)
+    print(YELLOW + "========== Strict Duplicate Rules ==========" + RESET)
     print()
     found_any = False
     for sig, rule_numbers in signatures.items():
@@ -254,11 +298,11 @@ def full_audit(fw_rules, rule_count, direction):
     if not found_any:
         print("No duplicates found.")
     print()
-    print(color3 + "*" * 100 + RESET)
+    print(YELLOW + "*" * 100 + RESET)
     print()
-    print(color3 + f"There are {rule_count} total firewall rules (CSV lines 2 through {rule_count + 1})" + RESET)
+    print(YELLOW + f"There are {rule_count} total firewall rules (CSV lines 2 through {rule_count + 1})" + RESET)
     print()
-    print(color3 + "##########  Analysis Complete  ##########" + RESET)
+    print(YELLOW + "##########  Analysis Complete  ##########" + RESET)
     print()
 
 
@@ -290,8 +334,9 @@ def main():
         
         elif choice == "3":
             clear_screen()
-            full_audit(fw_rules, rule_count, direction)
-            input("Press enter to return to the menu ... ")
+            port = get_port()
+            search_port(fw_rules, port, direction)
+            input("Press enter to return to the menu...")
             continue
 
         elif choice == "4":
@@ -301,6 +346,12 @@ def main():
             continue
 
         elif choice == "5":
+            clear_screen()
+            full_audit(fw_rules, rule_count, direction)
+            input("Press enter to return to the menu ... ")
+            continue
+
+        elif choice == "6":
             print()
             print("Exiting program")
             print()
