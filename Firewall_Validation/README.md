@@ -1,36 +1,24 @@
-## Windows Defender Firewall Rule Auditor
+# Windows Defender Firewall Rule Auditor
 
-A small Python tool that analyzes exported Windows Defender firewall rules and highlights potential security risks.
+A lightweight Python tool for analyzing exported Windows Defender Firewall rules and identifying potential security risks.
 
 ## Purpose
+Windows systems accumulate firewall rules over time — many become outdated, duplicated, or overly permissive. This tool helps you quickly review those rules and highlight anything that may weaken system security.
 
-Windows systems collect lots of firewall rules over time. Many are unnecessary, duplicated, or overly permissive. This tool helps you review those rules and spot anything that might weaken your security.
-
-## What It Does
-
-- Loads inbound and outbound firewall rule exports
-- Normalizes fields like ports, addresses, and profiles
-- Flags risky rules (e.g., “Any → Any”, Public profile, wide‑open ports)
-- Detects duplicates and unnecessary entries
-- Creates simple, readable summaries of each rule
+## Features
+- Load inbound or outbound firewall rule exports (CSV)
+- Normalize key fields (ports, addresses, profiles, program paths)
+- Highlight risky rules (e.g., Any→Any, Public profile, wide-open ports)
+- Detect duplicate rules
+- Search rules by port or program name
+- Summarize enabled/disabled rule counts
+- Generate a full audit report with readable, high‑value output
 
 ## Input
+Provide exported Windows Defender Firewall rules in CSV format.  
+Both inbound and outbound rule exports are supported.
 
-Use exported Windows Defender firewall rules (CSV or text).
-Your inbound and outbound files work perfectly.
-Planned Structure
-
-firewall-auditor/
-  src/
-    parser.py
-    risk_engine.py
-    report.py
-    main.py
-  data/
-  README.md
-
-
-## Future Ideas
-- Better risk scoring
-- Cleanup recommendations
-- Support for other firewalls (ASA, Palo Alto, etc.)
+## Future Enhancements
+- More advanced risk scoring
+- Cleanup and remediation recommendations
+- Support for additional firewalls (ASA, Palo Alto, etc.)
