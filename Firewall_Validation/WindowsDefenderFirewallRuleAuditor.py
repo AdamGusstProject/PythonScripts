@@ -41,7 +41,9 @@ REVERSE   = "\033[7m"
 
 def file_location():
     while True:
-        file_path = input("Enter the log file path: ")
+        print()
+        file_path = input(CYAN + "Enter the log file path: " + RESET)
+        print()
         if os.path.exists(file_path):
             return file_path
         else:
@@ -53,13 +55,13 @@ def file_location():
 
 def rule_direction():
     while True:
-        direction = input("Are these inbound or outbound rules? Enter 1 for inbound or 2 for outbound: ")
+        direction = input(CYAN + "Inbound Rule Press 1, Outbound Rule Press 2: " + RESET)
         if direction == "1":
             return "inbound"
         elif direction == "2":
             return "outbound"
         else:
-            print(color2 + f"Your choice was not 1 or 2: {direction}" + RESET)
+            print(RED + f"Your choice was not 1 or 2: {direction}" + RESET)
         
         
 
@@ -89,15 +91,16 @@ def menu():
             {CYAN}2. Show duplicate rules {RESET} 
             {CYAN}3. Search rules by port {RESET}
             {CYAN}4. Show enabled disabled counts {RESET}
-            {CYAN}5. Full audit {RESET}
-            {CYAN}6. Exit audit {RESET}
+            {CYAN}5. Search for program by name {RESET}
+            {CYAN}6. Full audit {RESET}
+            {CYAN}7. Exit audit {RESET}
             ''')
         
         choice = input(f"{CYAN}Enter your selection: {RESET}").strip()
-        if choice in ("1", "2", "3", "4", "5", "6"):
+        if choice in ("1", "2", "3", "4", "5", "6", "7"):
             return choice
         else:
-            print(RED + f"You need to enter a number between 1 and 5, try again." + RESET)
+            print(RED + f"You need to enter a number between 1 and 7, try again." + RESET)
 
 # This function clears the screen and lives after the menu choice in main()
 
@@ -106,8 +109,6 @@ def clear_screen():
         os.system('cls')
     else:
         os.system('clear') # MAC and Linux
-
-
 
 
 # This fuction pulls out high value fields.
@@ -241,6 +242,27 @@ def search_port(fw_rules, port, direction):
         print()
 
 
+# This function searches for applications
+
+def get_program():
+    while True:
+        program_name = input("Enter the program name you want to search for: ").strip().lower()
+        if program_name:
+            return program_name
+
+def search_program(fw_rules, program_name, direction):
+    found_any = False
+    for line in fw_rules:
+        if program_name in line[6].strip().lower():
+            high_value(line, direction)
+            found_any = True
+            print()
+            print()
+
+    if not found_any:
+        print("No program found for that name")
+        print()
+        print()
 
 
 # Function for full audit report
@@ -347,11 +369,18 @@ def main():
 
         elif choice == "5":
             clear_screen()
+            program_name = get_program()
+            search_program(fw_rules, program_name, direction)
+            input("Press enter to return to the menu ...")
+            continue
+
+        elif choice == "6":
+            clear_screen()
             full_audit(fw_rules, rule_count, direction)
             input("Press enter to return to the menu ... ")
             continue
 
-        elif choice == "6":
+        elif choice == "7":
             print()
             print("Exiting program")
             print()
